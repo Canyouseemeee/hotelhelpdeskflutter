@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>CNMI HELPDESK</title>
+  <title>HOTEL HELPDESK</title>
 
   <!-- Custom fonts for this template-->
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -40,18 +40,18 @@
         <div class="sidebar-brand-icon rotate-n-10">
           <i class="fas fa-fw fa-wrench"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">HD HelpDesk</div>
+        <div class="sidebar-brand-text mx-3">HT HelpDesk</div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <!-- <li class="nav-item active">
         <a class="nav-link" href="/dashboard">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
-      </li>
+      </li> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
@@ -63,13 +63,13 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <h6 class="collapse-header">Custom Components:</h6> -->
             <a class="collapse-item" href="/issues">New Issues</a>
-            <a class="collapse-item" href="/defer">Defer Issues</a>
+            <!-- <a class="collapse-item" href="/defer">Defer Issues</a> -->
             <a class="collapse-item" href="/closed">Closed Issues</a>
           </div>
         </div>
       </li>
 
-      <li class="{{ 'history' == request()->path() ? 'active' : '' }} nav-item ">
+      <!-- <li class="{{ 'history' == request()->path() ? 'active' : '' }} nav-item ">
         <a class="nav-link" href="/history">
           <i class="fas fa-fw fa-cog"></i>
           <span>History</span></a>
@@ -85,7 +85,7 @@
         <a class="nav-link" href="/calendar">
           <i class="fas fa-fw fa-calendar"></i>
           <span>Calendar</span></a>
-      </li>
+      </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -95,21 +95,21 @@
         Interface
       </div> -->
 
-      <li class="{{ 'role-register' == request()->path() ? 'active' : '' }} nav-item ">
+      <!-- <li class="{{ 'role-register' == request()->path() ? 'active' : '' }} nav-item ">
         <a class="nav-link" href="/role-register">
           <i class="fas fa-fw fa-folder"></i>
           <span>UserManagement</span></a>
-      </li>
+      </li> -->
 
       <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
           <span>Category</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <!-- <h6 class="collapse-header">Custom Utilities:</h6> -->
+            <h6 class="collapse-header">Custom Utilities:</h6>
             <a class="collapse-item" href="/tracker">Tracker</a>
             <a class="collapse-item" href="/priority">Priority</a>
             <a class="collapse-item" href="/status">Status</a>
@@ -117,7 +117,7 @@
             <a class="collapse-item" href="/device">Device</a>
           </div>
         </div>
-      </li>
+      </li> -->
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -145,7 +145,7 @@
             <i class="fa fa-bars"></i>
           </button>
 
-          <div class="text-white mx-3">CNMI RAMATHIBODI</div>
+          <div class="text-white mx-3">HOTEL HELPDESK</div>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">

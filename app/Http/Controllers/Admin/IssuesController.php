@@ -13,6 +13,7 @@ use App\Models\IssuesLogs;
 use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
 use App\Models\Issuestracker;
+use App\Models\HtIssues;
 use App\User;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
@@ -60,12 +61,18 @@ class IssuesController extends Controller
             ->where([['issues.Statusid', 1], ['issues.Date_In', now()->toDateString()]])
             ->orderBy('Issuesid', 'DESC')
             ->get();
+        $htissues = DB::table('htissues')
+        ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
+        ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+        ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
+        ->orderBy('Issuesid', 'DESC')
+        ->get();
         $between = null;
         $fromdate = null;
         $todate = null;
         $data = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
+        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'],['htissues']));
     }
 
     public function getReport(Request $request)
@@ -291,70 +298,70 @@ class IssuesController extends Controller
         $this->validate(
             $request,
             array(
-                'Trackerid' => 'required',
+                // 'Trackerid' => 'required',
                 'Subject' => 'required',
                 'Description' => 'required',
                 'Assignment' => 'required',
-                'Tel' => 'required',
-                'Informer' => 'required|min:6|max:8',
+                // 'Tel' => 'required',
+                // 'Informer' => 'required|min:6|max:8',
 
 
             ),
             [
-                'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
+                // 'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
                 'Subject.required' => 'You have enter Subject',
                 'Description.required' => 'You have enter Description',
                 'Assignment.required' => 'You have select Assignment',
-                'Tel.required' => 'You have enter Tel',
+                // 'Tel.required' => 'You have enter Tel',
                 // 'Informer.required' => 'You have enter Informer',
 
             ]
         );
 
-        $issues = new Issues();
-        $issues->Trackerid = $request->input('Trackerid');
-        $issues->Priorityid = $request->input('Priorityid');
-        $issues->Statusid = $request->input('Statusid');
-        $issues->Departmentid = $request->input('Departmentid');
-        $issues->Createby = $request->input('Createby');
-        $issues->Updatedby = $issues->Createby;
-        $issues->Assignment = $request->input('Assignment');
-        $issues->Subject = $request->input('Subject');
-        $issues->Tel = $request->input('Tel');
-        $issues->Comname = $request->input('Comname');
-        $issues->Informer = $request->input('Informer');
-        $issues->Description = $request->input('Description');
-        $issues->Date_In = $request->input('Date_In');
-        $issues->Uuid = $request->input('temp');
-        $issues->created_at = DateThai(now());
-        $issues->updated_at = DateThai(now());
+        $htissues = new HtIssues();
+        // $issues->Trackerid = $request->input('Trackerid');
+        // $issues->Priorityid = $request->input('Priorityid');
+        $htissues->Statusid = $request->input('Statusid');
+        $htissues->Departmentid = $request->input('Departmentid');
+        $htissues->Createby = $request->input('Createby');
+        $htissues->Updatedby = $htissues->Createby;
+        $htissues->Assignment = $request->input('Assignment');
+        $htissues->Subject = $request->input('Subject');
+        // $issues->Tel = $request->input('Tel');
+        // $issues->Comname = $request->input('Comname');
+        // $issues->Informer = $request->input('Informer');
+        $htissues->Description = $request->input('Description');
+        $htissues->Date_In = $request->input('Date_In');
+        $htissues->Uuid = $request->input('temp');
+        $htissues->created_at = DateThai(now());
+        $htissues->updated_at = DateThai(now());
 
         if ($request->hasFile('Image')) {
             $filename = $request->Image->getClientOriginalName();
             $file = time() . '.' . $filename;
-            $issues->Image = $request->Image->storeAs('images', $file, 'public');
+            $htissues->Image = $request->Image->storeAs('images', $file, 'public');
             // dd($file);
         } else {
-            $issues->Image = null;
+            $htissues->Image = null;
         }
 
-        $issues->save();
+        $htissues->save();
         // echo($issues->Issuesid);
         $temp = $request->input('temp');
-        $Appoint = DB::table('appointments')
-            ->select('*')
-            ->where('Uuid', $temp)
-            ->get();
-        if ($Appoint == '[]') {
-            $appointment = null;
-        } else {
-            foreach ($Appoint as $row) {
-                $Appointmentsid = $row->Appointmentsid;
-            }
-            $appointment = Appointments::find($Appointmentsid);
-            $appointment->Issuesid = $issues->Issuesid;
-            $appointment->update();
-        }
+        // $Appoint = DB::table('appointments')
+        //     ->select('*')
+        //     ->where('Uuid', $temp)
+        //     ->get();
+        // if ($Appoint == '[]') {
+        //     $appointment = null;
+        // } else {
+        //     foreach ($Appoint as $row) {
+        //         $Appointmentsid = $row->Appointmentsid;
+        //     }
+        //     $appointment = Appointments::find($Appointmentsid);
+        //     $appointment->Issuesid = $issues->Issuesid;
+        //     $appointment->update();
+        // }
         $comment = DB::table('issues_comment')
             ->select('*')
             ->where('Uuid', $temp)

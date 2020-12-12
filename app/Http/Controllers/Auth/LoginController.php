@@ -100,7 +100,7 @@ class LoginController extends Controller
                 // Auth::loginUsingId($uinfo->id, TRUE); //AD 
                 if (Auth::loginUsingId($uinfo->id, TRUE)) {
                     if (Auth::user()->usertype == 'admin') {
-                        return redirect()->intended('dashboard');
+                        return redirect()->intended('issues');
                     } else if (Auth::user()->usertype == 'user') {
                         return redirect()->intended('dashboarduser');
                     } else{

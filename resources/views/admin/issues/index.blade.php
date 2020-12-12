@@ -80,22 +80,20 @@ function DateThai($strDate)
                     <table class="table " id="datatable" width="100%" cellspacing="0">
                         <thead class="text-primary">
                             <th class="w-10p">Id</th>
-                            <th class="w-10p">Tracker</th>
+                            <!-- <th class="w-10p">Tracker</th> -->
                             <th class="w-10p">Status</th>
-                            <th class="w-10p">Priority</th>
+                            <!-- <th class="w-10p">Priority</th> -->
                             <th class="w-10p">Createby</th>
                             <th class="w-10p">Subject</th>
                             <th class="w-10p">Updated</th>
                             <th class="w-10p">Views</th>
                         </thead>
-                        @if (!is_null($issues))
+                        @if (!is_null($htissues))
                         <tbody>
-                            @foreach($issues as $row)
+                            @foreach($htissues as $row)
                             <tr>
                                 <td>{{$row->Issuesid}}</td>
-                                <td>{{$row->TrackName}}</td>
                                 <td>{{$row->ISSName}}</td>
-                                <td>{{$row->ISPName}}</td>
                                 <td>{{$row->Createby}}</td>
                                 <td>
                                     <div class="w-11p" style="height: 30px; overflow: hidden;">

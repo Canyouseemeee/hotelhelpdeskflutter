@@ -13,72 +13,12 @@ function DateThai($strDate)
     return "$newDate";
 }
 ?>
-<!-- Modal Appointments -->
-<div class="modal fade" id="issueslistModal" tabindex="-1" role="dialog" aria-labelledby="issuesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="issuesModalLabel">Appointment Add</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!-- <form action="{{ url('/appointment-add') }}" method="post"> -->
-            <form id="addform">
-                {{ csrf_field() }}
-                <div class="modal-body">
 
-                    <div class="form-group">
-                        <label for="">AppointDate</label>
-                        <input type="dateTime-local" id="AppointDate" name="AppointDate" value="{{now()->toDateString()}}" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Comment</label>
-                        <textarea id="Comment" name="Comment" class="form-control" rows="3" placeholder="Enter Comment"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Status</label>
-                        <select id="Status" name="Status" class="form-control" require>
-                            <option value="1">Active</option>
-                            <option value="2">Change</option>
-                            <option value="3">Disable</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Createby</label>
-                        <input type="text" name="Createby" class="form-control" value="{{Auth::user()->name}}" placeholder="{{Auth::user()->name}}" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
-                        <input id="tempappoint" name="temp" class="form-control" placeholder="{{$temp}}" value="{{$temp}}" hidden>
-                    </div>
-
-                    <div class="form-group">
-                        <!-- <label for="">Uuid</label> -->
-                        <input name="Issuesid" class="form-control" placeholder="{{$data->Issuesid}}" value="{{$data->Issuesid}}" hidden>
-                    </div>
-
-                    <div id="result">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="appointmentclosed" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="savemodal" name="action" value="save" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- End Modal -->
 
 <!-- <div class="btn-group btn-group-toggle" data-toggle="buttons"> -->
 <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
 <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
-<button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
+<!-- <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button> -->
 <!-- </div> -->
 
 <div class="row subissues">
@@ -101,7 +41,7 @@ function DateThai($strDate)
 
                     <div class="form-row">
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label>Tracker</label>
                             <select name="TrackName" id="TrackName" class="form-control input-lg dynamic" data-dependent="SubTrackName">
                                 @foreach($find as $find1)
@@ -118,7 +58,7 @@ function DateThai($strDate)
                         <div class="col-md-3">
                             <label>SubTracker</label>
                             <select name="SubTrackName" id="SubTrackName" class="form-control input-lg dynamic findidother" data-dependent="Name" disabled>
-                                <!-- <option value="">Select SubTrackName</option> -->
+                                <option value="">Select SubTrackName</option>
                                 @foreach($tracker as $row11)
                                 <option value="" @if ($row11->Trackerid === $data->Trackerid)
                                     selected
@@ -131,7 +71,7 @@ function DateThai($strDate)
                         <div class="col-md-3">
                             <label>Name</label>
                             <select name="Name" id="Name" class="form-control input-lg Name " disabled>
-                                <!-- <option value="">Select Name</option> -->
+                                <option value="">Select Name</option>
                                 @foreach($tracker as $row12)
                                 <option value="" @if ($row12->Trackerid === $data->Trackerid)
                                     selected
@@ -139,13 +79,13 @@ function DateThai($strDate)
                                     >{{$row12->Name}}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> -->
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <input type="hidden" value="{{$data->Trackerid}}" class="tracker_id" id="Trackerid" name="Trackerid">
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label>Priority</label>
                             <select name="Priorityid" class="form-control create" require>
                                 @foreach($issuespriority as $row2)
@@ -155,7 +95,7 @@ function DateThai($strDate)
                                     >{{$row2->ISPName}}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-3">
                             <label>Status</label>
@@ -218,20 +158,6 @@ function DateThai($strDate)
                             </select>
                         </div>
 
-                        <div class="form-group col-md-3">
-                            <label>Tel</label>
-                            <input name="Tel" class="form-control" value="{{$data->Tel}}" placeholder="{{$data->Tel}}">
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <label>Comname</label>
-                            <input name="Comname" class="form-control" value="{{$data->Comname}}" placeholder="{{$data->Comname}}">
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <label>Informer</label>
-                            <input name="Informer" class="form-control" placeholder="{{$data->Informer}}" value="{{$data->Informer}}">
-                        </div>
                     </div>
 
                     <div class="form-group">
@@ -252,97 +178,6 @@ function DateThai($strDate)
                     <input type="submit" value="Update" class="btn btn-primary ">
                     <a href="{{ url('issues-show/'.$data->Issuesid) }}" class="btn btn-danger">Back</a>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row panelsub_all subappoint">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <a href="" class="btn btn-primary float-right" data-toggle="modal" data-target="#issueslistModal">Appointment Add</a>
-                <h4 class="card-title">Appointment Issues </h4>
-
-            </div>
-            <style>
-                .w-10p {
-                    width: 10% !important;
-                }
-
-                .w-11p {
-                    width: 300px;
-                    word-break: 'break-all';
-                }
-            </style>
-            <div class="card-body" id="refresh">
-                @if(!is_null($appointment))
-                <table id="datatableappoint" class="table">
-                    <thead class="text-primary">
-                        <th>Date</th>
-                        <th>Comment</th>
-                        <th>Status</th>
-                        <th>Createby</th>
-                        <th>Updateby</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                        <th>Edit</th>
-                    </thead>
-                    <tbody id="datatableappointbody">
-                        @foreach($appointment as $row)
-                        <tr>
-                            <td>{{$row->Date}}</td>
-                            <td>
-                                <div class="w-11p" style="height: 30px; overflow: hidden;">
-                                    {{$row->Comment}}
-                                </div>
-                            </td>
-                            @if($row->Status === 1)
-                            <td>Active</td>
-                            @elseif($row->Status === 2)
-                            <td>Change</td>
-                            @elseif($row->Status === 3)
-                            <td>Disable</td>
-                            @endif
-                            <td>{{$row->Createby}}</td>
-                            <td>{{$row->Updateby}}</td>
-                            <td>{{$row->created_at}}</td>
-                            <td>{{$row->updated_at}}</td>
-                            @if($row->Status === 1)
-                            <td>
-                                <a href="" data-toggle="modal" data-target="#issueseditModal" class="btn btn-success">Edit</a>
-                            </td>
-                            @endif
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @else
-                <table id="datatableappoint" class="table">
-                    <thead class="text-primary">
-                        <th>Date</th>
-                        <th>Comment</th>
-                        <th>Status</th>
-                        <th>Createby</th>
-                        <th>Updateby</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                        <th>Edit</th>
-                    </thead>
-                    <tbody id="datatableappointbody">
-                        <tr>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                        </tr>
-                    </tbody>
-                </table>
-                @endif
             </div>
         </div>
     </div>
@@ -435,6 +270,10 @@ function DateThai($strDate)
                         <textarea id="CComment" name="CComment" class="form-control" rows="1" placeholder="Enter Comment"></textarea>
                     </div>
 
+                    <div class="form-group">
+                        <input type="hidden" id="Issuesid" name="Issuesid" class="form-control" value="{{$data->Issuesid}}" placeholder="{{$data->Issuesid}}">
+                    </div>
+                    
                     <div class="form-group">
                         <label for="">Image</label><br>
                         <input type="file" id="image" name="image">

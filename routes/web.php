@@ -30,6 +30,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/checklogin', 'HomeController@checklogin');
 Route::get('/export', 'ExportExcelController@export')->name('export');
 Route::post('/login-issues', 'Auth\LoginController@login');
+Route::get('/createissues-user/{roomid}', 'User\CreateuserController@index');
 
 // Route::group(['middleware' => ['auth', 'admin']], function () {
     // Dashboard

@@ -58,7 +58,7 @@ function DateTime($strDate)
 
 <button type="button" class="btn btn-outline-warning btn_showIssues active">Issues Create</button>
 <button type="button" class="btn btn-outline-primary btn_showComments">Comments</button>
-<button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button>
+<!-- <button type="button" class="btn btn-outline-danger btn_showAppointments">Appointments</button> -->
 
 
 <form action="{{ url('issues-show/'.$data->Issuesid) }}" method="PUT">
@@ -175,16 +175,16 @@ function DateTime($strDate)
                     <div class="card-body row">
                         <div class="" style="font-size:20px">
                             <div class="form-row ">
-                                <div class="form-group col-md-3">
+                                <!-- <div class="form-group col-md-3">
                                     <b> <label>Tracker : </label></b>
                                     @foreach($trackname as $row)
                                     @if ($row->Trackerid === $data->Trackerid)
                                     <label>{{$row->TrackName}}</label>
                                     @endif
                                     @endforeach
-                                </div>
+                                </div> -->
 
-                                <div class="form-group col-md-3">
+                                <!-- <div class="form-group col-md-3">
                                     <b> <label>SubTracker : </label></b>
                                     @foreach($trackname as $row)
                                     @if ($row->Trackerid === $data->Trackerid)
@@ -209,7 +209,7 @@ function DateTime($strDate)
                                     <label>{{$row2->ISPName}}</label>
                                     @endif
                                     @endforeach
-                                </div>
+                                </div> -->
 
                                 <div class="form-group col-md-3">
                                     <b> <label>Status : </label></b>
@@ -230,16 +230,6 @@ function DateTime($strDate)
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <b> <label>Tel : </label></b>
-                                    <label>{{$data->Tel}}</label>
-                                </div>
-
-                                <div class="form-group col-md-3">
-                                    <b> <label>Comname : </label></b>
-                                    <label>{{$data->Comname}}</label>
-                                </div>
-
-                                <div class="form-group col-md-3">
                                     <b> <label>Assignment : </label></b>
                                     @foreach($user as $row5)
                                     @if ($row5->id === $data->Assignment)
@@ -248,10 +238,6 @@ function DateTime($strDate)
                                     @endforeach
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <b> <label>Informer : </label></b>
-                                    <label>{{$data->Informer}}</label>
-                                </div>
                             </div>
 
                             <b><label>Subject : </label></b>
@@ -334,87 +320,6 @@ function DateTime($strDate)
         </div>
     </div>
 </form>
-<div class="row panelsub_all subappoint">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Appointment Issues </h4>
-
-            </div>
-            <style>
-                .w-10p {
-                    width: 10% !important;
-                }
-
-                .w-11p {
-                    width: 300px;
-                    word-break: 'break-all';
-                }
-            </style>
-            <div class="card-body" id="refresh">
-                @if(!is_null($appointment))
-                <table id="datatableappoint" class="table">
-                    <thead class="text-primary">
-                        <th>Date</th>
-                        <th>Comment</th>
-                        <th>Status</th>
-                        <th>Createby</th>
-                        <th>Updateby</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                    </thead>
-                    <tbody id="datatableappointbody">
-                        @foreach($appointment as $row)
-                        <tr>
-                            <td>{{$row->Date}}</td>
-                            <td>
-                                <div class="w-11p" style="height: 30px; overflow: hidden;">
-                                    {{$row->Comment}}
-                                </div>
-                            </td>
-                            @if($row->Status === 1)
-                            <td>Active</td>
-                            @elseif($row->Status === 2)
-                            <td>Change</td>
-                            @elseif($row->Status === 3)
-                            <td>Disable</td>
-                            @endif
-                            <td>{{$row->Createby}}</td>
-                            <td>{{$row->Updateby}}</td>
-                            <td>{{$row->created_at}}</td>
-                            <td>{{$row->updated_at}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @else
-                <table id="datatableappoint" class="table">
-                    <thead class="text-primary">
-                        <th>Date</th>
-                        <th>Comment</th>
-                        <th>Status</th>
-                        <th>Createby</th>
-                        <th>Updateby</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                    </thead>
-                    <tbody id="datatableappointbody">
-                        <tr>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                            <td>ไม่มีข้อมูลที่จะแสดง</td>
-                        </tr>
-                    </tbody>
-                </table>
-                @endif
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row panelsub_all subcomment">
     <style>
