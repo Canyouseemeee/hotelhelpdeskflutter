@@ -26,7 +26,7 @@ class _MenuState extends State<Menu> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Menu",
+              "Menu ",
             )
           ],
         ),
