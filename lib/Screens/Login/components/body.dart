@@ -26,7 +26,7 @@ class _BodyState extends State<Body> {
     var jsonData = null;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var response =
-        await http.post("https://aac93bab3ed7.ngrok.io/api/login/", body: data);
+        await http.post("http://127.0.0.1:8000/api/login/", body: data);
     if (response.statusCode == 200) {
       jsonData = json.decode(response.body);
       // print(jsonData);
