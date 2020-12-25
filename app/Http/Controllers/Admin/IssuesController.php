@@ -14,6 +14,7 @@ use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
 use App\Models\Issuestracker;
 use App\Models\HtIssues;
+use App\Models\TypeIssues;
 use App\User;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
@@ -62,17 +63,17 @@ class IssuesController extends Controller
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $htissues = DB::table('htissues')
-        ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
-        ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
-        ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
-        ->orderBy('Issuesid', 'DESC')
-        ->get();
+            ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
+            ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+            ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
+            ->orderBy('Issuesid', 'DESC')
+            ->get();
         $between = null;
         $fromdate = null;
         $todate = null;
         $data = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'],['htissues']));
+        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'], ['htissues']));
     }
 
     public function getReport(Request $request)
@@ -98,63 +99,19 @@ class IssuesController extends Controller
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->count();
-        } else {
-            $between = null;
-            $data = null;
-        }
-        $issues = null;
-        $Uuidapp = Str::uuid()->toString();
-        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
-    }
-
-    public function defer()
-    {
-        $issues = DB::table('issues_tracker')
-            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
-            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-            ->where('issues.Statusid', 3)
-            ->orderBy('Issuesid', 'DESC')
-            ->get();
-        $between = null;
-        $fromdate = null;
-        $todate = null;
-        $data = null;
-        $Uuidapp = Str::uuid()->toString();
-        return view('admin.issues.defer', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
-    }
-
-    public function getReportdefers(Request $request)
-    {
-        $fromdate = $request->input('fromdate');
-        $todate = $request->input('todate');
-        if ($request->isMethod('post')) {
-            $between = DB::table('issues_tracker')
-                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                ->where('issues.Statusid', 3)
-                ->whereBetween('issues.Date_In', [$fromdate, $todate])
+            $htissues = DB::table('htissues')
+                ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
+                ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+                ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
-            $data = DB::table('issues_tracker')
-                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
-                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                ->where('issues.Statusid', 3)
-                ->whereBetween('issues.Date_In', [$fromdate, $todate])
-                ->orderBy('Issuesid', 'DESC')
-                ->count();
         } else {
             $between = null;
             $data = null;
         }
         $issues = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('admin.issues.defer', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
+        return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'], ['htissues']));
     }
 
     public function closed()
@@ -168,12 +125,19 @@ class IssuesController extends Controller
             ->where([['issues.Statusid', 2], ['issues_logs.Action', 'Closed']])
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
+        $htissues = DB::table('htissues')
+            ->select('htissues.Issuesid', 'issues_status.ISSName', 'htissues.Createby', 'htissues.Subject', 'issues_logs.create_at')
+            ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+            ->join('issues_logs', 'issues_logs.Issuesid', '=', 'htissues.Issuesid')
+            ->where([['htissues.Statusid', 2], ['issues_logs.Action', 'Closed']])
+            ->orderBy('htissues.Issuesid', 'DESC')
+            ->get();
         $between = null;
         $fromdate = null;
         $todate = null;
         $data = null;
         $Uuidapp = Str::uuid()->toString();
-        return view('admin.issues.closed', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
+        return view('admin.issues.closed', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'], ['htissues']));
     }
 
     public function getReportclosed(Request $request)
@@ -193,15 +157,20 @@ class IssuesController extends Controller
                         ->whereBetween('issues.Date_In', [$fromdate, $todate])
                         ->orderBy('Issuesid', 'DESC')
                         ->get();
-                    $data = DB::table('issues_tracker')
-                        ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
-                        ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-                        ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-                        ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                        ->where('issues.Statusid', 2)
-                        ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                    $data = DB::table('htissues')
+                        ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'issues.updated_at')
+                        ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+                        ->where('htissues.Statusid', 2)
+                        ->whereBetween('htissues.Date_In', [$fromdate, $todate])
                         ->orderBy('Issuesid', 'DESC')
                         ->count();
+                    $htissues = DB::table('htissues')
+                        ->select('htissues.Issuesid', 'issues_status.ISSName', 'htissues.Createby', 'htissues.Subject', 'issues_logs.create_at')
+                        ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+                        ->join('issues_logs', 'issues_logs.Issuesid', '=', 'htissues.Issuesid')
+                        ->where([['htissues.Statusid', 2], ['issues_logs.Action', 'Closed']])
+                        ->orderBy('htissues.Issuesid', 'DESC')
+                        ->get();
                 } else {
                     $between = null;
                     $data = null;
@@ -219,7 +188,7 @@ class IssuesController extends Controller
                 break;
         }
 
-        return view('admin.issues.closed', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
+        return view('admin.issues.closed', compact(['htissues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data']));
     }
 
 
@@ -233,9 +202,9 @@ class IssuesController extends Controller
         // $issuestracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
-        $department = DB::table('department')
+        $typeissues = DB::table('typeissues')
             ->select('*')
-            ->where('DmStatus', 1)
+            ->where('Status', 1)
             ->get();
         $user = User::all();
         $issuesLogs = IssuesLogs::all();
@@ -281,7 +250,7 @@ class IssuesController extends Controller
             ['issues'],
             ['issuespriority'],
             ['issuesstatus'],
-            ['department'],
+            ['typeissues'],
             ['tracker'],
             ['user'],
             ['issuesLogs'],
@@ -322,7 +291,7 @@ class IssuesController extends Controller
         // $issues->Trackerid = $request->input('Trackerid');
         // $issues->Priorityid = $request->input('Priorityid');
         $htissues->Statusid = $request->input('Statusid');
-        $htissues->Departmentid = $request->input('Departmentid');
+        $htissues->Typeissuesid = $request->input('Typeissuesid');
         $htissues->Createby = $request->input('Createby');
         $htissues->Updatedby = $htissues->Createby;
         $htissues->Assignment = $request->input('Assignment');
@@ -346,22 +315,7 @@ class IssuesController extends Controller
         }
 
         $htissues->save();
-        // echo($issues->Issuesid);
         $temp = $request->input('temp');
-        // $Appoint = DB::table('appointments')
-        //     ->select('*')
-        //     ->where('Uuid', $temp)
-        //     ->get();
-        // if ($Appoint == '[]') {
-        //     $appointment = null;
-        // } else {
-        //     foreach ($Appoint as $row) {
-        //         $Appointmentsid = $row->Appointmentsid;
-        //     }
-        //     $appointment = Appointments::find($Appointmentsid);
-        //     $appointment->Issuesid = $issues->Issuesid;
-        //     $appointment->update();
-        // }
         $comment = DB::table('issues_comment')
             ->select('*')
             ->where('Uuid', $temp)
@@ -373,7 +327,7 @@ class IssuesController extends Controller
                 $usercomment = $row->Commentid;
             }
             $comments = IssuesComment::find($usercomment);
-            $comments->Issuesid = $issues->Issuesid;
+            $comments->Issuesid = $htissues->Issuesid;
             $comments->update();
         }
 
@@ -382,17 +336,17 @@ class IssuesController extends Controller
 
     public function show($Issuesid)
     {
-        $data = Issues::find($Issuesid);
+        $data = htIssues::find($Issuesid);
         $tracker = Issuestracker::find($Issuesid);
-        $issues = Issues::all();
+        $htissues = htIssues::all();
         $trackname = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
-        $department = Department::all();
+        $typeissues = TypeIssues::all();
         $user = User::all();
         $issueslog = DB::table('issues_logs')
             ->select('issues_logs.create_at')
-            ->join('issues', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->join('htissues', 'htissues.Issuesid', '=', 'issues_logs.Issuesid')
             ->where([['Action', 'Closed'], ['issues_logs.Issuesid', $data->Issuesid]])
             ->get();
         $appointment = DB::table('appointments')
@@ -430,13 +384,13 @@ class IssuesController extends Controller
                 if ($strEnd != null) {
                     $dateinterval = $strStart->diff($strEnd);
                     return view('admin.issues.show', compact(
-                        ['issues'],
+                        ['htissues'],
                         ['issueslog'],
                         ['data'],
                         ['trackname'],
                         ['issuespriority'],
                         ['issuesstatus'],
-                        ['department'],
+                        ['typeissues'],
                         ['tracker'],
                         ['user'],
                         ['dateinterval'],
@@ -451,13 +405,13 @@ class IssuesController extends Controller
         // $dateinterval->format('%D day %H:%I:%S');
 
         return view('admin.issues.show', compact(
-            ['issues'],
+            ['htissues'],
             ['issueslog'],
             ['data'],
             ['trackname'],
             ['issuespriority'],
             ['issuesstatus'],
-            ['department'],
+            ['typeissues'],
             ['tracker'],
             ['user'],
             ['appointment'],
@@ -468,8 +422,8 @@ class IssuesController extends Controller
 
     public function edit($Issuesid, $Uuid)
     {
-        $data = Issues::find($Issuesid);
-        $issues = Issues::all();
+        $data = htIssues::find($Issuesid);
+        $htissues = htIssues::all();
         $trackname = DB::table('issues_tracker')
             ->groupBy('TrackName')
             ->get();
@@ -482,9 +436,9 @@ class IssuesController extends Controller
         $tracker = Issuestracker::all();
         $issuespriority = Issuespriority::all();
         $issuesstatus = Issuesstatus::all();
-        $department = DB::table('department')
+        $typeissues = DB::table('typeissues')
             ->select('*')
-            ->where('DmStatus', 1)
+            ->where('Status', 1)
             ->get();
         $user = User::all();
         if ($Uuid == null) {
@@ -524,14 +478,14 @@ class IssuesController extends Controller
                 ->get();
         }
         return view('admin.issues.edit', compact(
-            ['issues'],
+            ['htissues'],
             ['data'],
             ['find'],
             ['trackname'],
             ['tracker'],
             ['issuespriority'],
             ['issuesstatus'],
-            ['department'],
+            ['typeissues'],
             ['user'],
             ['appointment'],
             ['temp'],
@@ -547,60 +501,57 @@ class IssuesController extends Controller
         $this->validate(
             $request,
             array(
-                'Trackerid' => 'required',
+                // 'Trackerid' => 'required',
                 'Subject' => 'required',
                 'Description' => 'required',
                 'Assignment' => 'required',
-                'Tel' => 'required',
-                'Informer' => 'required|min:6',
+                // 'Tel' => 'required',
+                // 'Informer' => 'required|min:6',
                 // 'Image' => 'required|image',
 
             ),
             [
-                'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
+                // 'Trackerid.required' => 'You have select TrackName and SubTrackName and Name',
                 'Subject.required' => 'You have enter Subject',
                 'Description.required' => 'You have enter Description',
-                'Tel.required' => 'You have enter Tel',
+                // 'Tel.required' => 'You have enter Tel',
                 'Assignment.required' => 'You have select Assignment',
                 // 'Informer.required' => 'You have enter Informer',
 
             ]
         );
 
-        $issues = Issues::find($Issuesid);
+        $htissues = htIssues::find($Issuesid);
 
-        $issues->Trackerid = $request->input('Trackerid');
-        $issues->Priorityid = $request->input('Priorityid');
-        if ($issues->Statusid == 2) {
-            $issues->Statusid = $issues->Statusid;
+        // $htissues->Trackerid = $request->input('Trackerid');
+        // $htissues->Priorityid = $request->input('Priorityid');
+        if ($htissues->Statusid == 2) {
+            $htissues->Statusid = $htissues->Statusid;
         } else {
-            $issues->Statusid = $request->input('Statusid');
-            if ($issues->Statusid == 2) {
-                $issues->Closedby = $request->input('Updatedby');
+            $htissues->Statusid = $request->input('Statusid');
+            if ($htissues->Statusid == 2) {
+                $htissues->Closedby = $request->input('Updatedby');
             }
         }
-        $issues->Departmentid = $request->input('Departmentid');
-        $issues->Updatedby = $request->input('Updatedby');
-        $issues->Assignment = $request->input('Assignment');
-        $issues->Subject = $request->input('Subject');
-        $issues->Tel = $request->input('Tel');
-        $issues->Comname = $request->input('Comname');
-        $issues->Informer = $request->input('Informer');
-        $issues->Description = $request->input('Description');
-        $issues->Date_In = $request->input('Date_In');
-        $issues->updated_at = DateThai(now());
+        $htissues->Typeissuesid = $request->input('Typeissuesid');
+        $htissues->Updatedby = $request->input('Updatedby');
+        $htissues->Assignment = $request->input('Assignment');
+        $htissues->Subject = $request->input('Subject');
+        $htissues->Description = $request->input('Description');
+        $htissues->Date_In = $request->input('Date_In');
+        $htissues->updated_at = DateThai(now());
 
 
         if ($request->hasFile('Image')) {
             $filename = $request->Image->getClientOriginalName();
             $file = time() . '.' . $filename;
-            $issues->Image = $request->Image->storeAs('images', $file, 'public');
+            $htissues->Image = $request->Image->storeAs('images', $file, 'public');
         } else {
-            $issues->Image = $request->input('Image2');
+            $htissues->Image = $request->input('Image2');
         }
         // echo($issues->Image);
 
-        $issues->update();
+        $htissues->update();
 
         return redirect('/issues')->with('status', 'Data Update for Issues Successfully');
     }

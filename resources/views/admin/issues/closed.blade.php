@@ -46,7 +46,7 @@ function DateThai($strDate)
                         <div class="form-group">
                             <div class="col-md-12">
                                 @if($fromdate != null)
-                                    <label class="col-form-label text-md-right float-left"> Fromdate : {{$fromdate}} - Todate : {{$todate}} is quantity {{$data}} </label>
+                                <label class="col-form-label text-md-right float-left"> Fromdate : {{$fromdate}} - Todate : {{$todate}} is quantity {{$data}} </label>
                                 @endif
                                 <button type="submit" name="action" value="search" class="btn btn-primary float-right">Search</button>
                                 <button type="submit" name="action" value="export" class="btn btn-warning float-right">Export Excel</button>
@@ -82,22 +82,18 @@ function DateThai($strDate)
                     <table id="datatable" class="table">
                         <thead class="text-primary">
                             <th class="w-10p">Id</th>
-                            <th class="w-10p">Tracker</th>
                             <th class="w-10p">Status</th>
-                            <th class="w-10p">Priority</th>
                             <th class="w-10p">Createby</th>
                             <th class="w-10p">Subject</th>
                             <th class="w-10p">Closed</th>
                             <th class="w-10p">Views</th>
                         </thead>
-                        @if (!is_null($issues))
+                        @if (!is_null($htissues))
                         <tbody>
-                            @foreach($issues as $row)
+                            @foreach($htissues as $row)
                             <tr>
                                 <td>{{$row->Issuesid}}</td>
-                                <td>{{$row->TrackName}}</td>
                                 <td>{{$row->ISSName}}</td>
-                                <td>{{$row->ISPName}}</td>
                                 <td>{{$row->Createby}}</td>
                                 <td>
                                     <div class="w-11p" style="height: 30px; overflow: hidden;">

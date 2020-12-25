@@ -52,10 +52,10 @@ Register Edit
                                         <select name="teamid" class="form-control">
                                             <option value="1" @if ($users->teamid === 1)
                                                 selected
-                                                @endif>HW</option>
+                                                @endif>Technician</option>
                                             <option value="2" @if ($users->teamid === 2)
                                                 selected
-                                                @endif>SW</option>
+                                                @endif>Reception</option>
                                             <option value="3" @if ($users->teamid === 3)
                                                 selected
                                                 @endif>ADMIN</option>

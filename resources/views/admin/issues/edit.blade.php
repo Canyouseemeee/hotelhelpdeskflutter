@@ -123,14 +123,14 @@ function DateThai($strDate)
                         </div>
 
                         <div class="col-md-3">
-                            <label>Department</label>
+                            <label>TypeIssues</label>
                             <p>
-                                <select id="Departmentid" name="Departmentid" class="form-control create col-md-12" require>
-                                    @foreach($department as $row4)
-                                    <option value="{{$row4->Departmentid}}" @if ($row4->Departmentid === $data->Departmentid)
+                                <select id="Typeissuesid" name="Typeissuesid" class="form-control create col-md-12" require>
+                                    @foreach($typeissues as $row4)
+                                    <option value="{{$row4->Typeissuesid}}" @if ($row4->Typeissuesid === $data->Typeissuesid)
                                         selected
                                         @endif
-                                        >{{$row4->DmCode}} - {{$row4->DmName}}</option>
+                                        >{{$row4->Typename}}</option>
                                     @endforeach
                                 </select>
                             </p>
@@ -514,8 +514,8 @@ function DateThai($strDate)
 </script>
 
 <script>
-    $('#Departmentid').select2({
-        placeholder: " Enter Department",
+    $('#Typeissuesid').select2({
+        placeholder: " Enter Typeissues",
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,
@@ -630,15 +630,6 @@ function DateThai($strDate)
 <script>
     $('.panelsub_all').hide();
 
-    $('.btn_showAppointments').click(function(e) {
-        e.preventDefault();
-        $('.subappoint').show();
-        $('.subissues').hide();
-        $('.subcomment').hide();
-        $(this).addClass('active');
-        $('.btn_showIssues').removeClass('active')
-        $('.btn_showComments').removeClass('active')
-    });
 
     $('.btn_showIssues').click(function(e) {
         e.preventDefault();

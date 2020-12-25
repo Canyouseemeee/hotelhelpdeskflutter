@@ -79,14 +79,14 @@ Route::get('/createissues-user/{roomid}', 'User\CreateuserController@index');
     Route::post('/appointment-add', 'Admin\AppointmentController@store');
     Route::post('/issues-appointment-add', 'Admin\AppointmentController@storeedit');
 
-    //department//
-    Route::get('/department', 'Admin\DepartmentController@index');
-    Route::get('/department-create', 'Admin\DepartmentController@create');
-    Route::post('/department-store', 'Admin\DepartmentController@store');
-    Route::get('/department-edit/{id}', 'Admin\DepartmentController@edit');
-    Route::put('/department-update/{id}', 'Admin\DepartmentController@update');
-    Route::delete('/department-delete/{id}', 'Admin\DepartmentController@delete');
-    Route::get('/changStatus', 'Admin\DepartmentController@changStatus')->name('change_Status');
+    //typeissues//
+    Route::get('/typeissues', 'Admin\TypeIssuesController@index');
+    Route::get('/typeissues-create', 'Admin\TypeIssuesController@create');
+    Route::post('/typeissues-store', 'Admin\TypeIssuesController@store');
+    Route::get('/typeissues-edit/{id}', 'Admin\TypeIssuesController@edit');
+    Route::put('/typeissues-update/{id}', 'Admin\TypeIssuesController@update');
+    Route::delete('/typeissues-delete/{id}', 'Admin\TypeIssuesController@delete');
+    Route::get('/changStatus', 'Admin\TypeIssuesController@changStatus')->name('change_Status');
 
     //device//
     Route::get('/device', 'Admin\DeviceController@index');
@@ -157,13 +157,14 @@ Route::delete('/tracker-delete/{id}', 'Admin\TrackerController@delete');
 Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontroller.fetch');
 
 
-//priority//
-Route::get('/priority', 'Admin\PriorityController@index');
-Route::get('/priority-create', 'Admin\PriorityController@create');
-Route::post('/priority-store', 'Admin\PriorityController@store');
-Route::get('/priority-edit/{id}', 'Admin\PriorityController@edit');
-Route::put('/priority-update/{id}', 'Admin\PriorityController@update');
-Route::delete('/priority-delete/{id}', 'Admin\PriorityController@delete');
+//room//
+Route::get('/room', 'Admin\RoomController@index');
+Route::get('/room-create', 'Admin\RoomController@create');
+Route::post('/room-store', 'Admin\RoomController@store');
+Route::get('/room-edit/{id}', 'Admin\RoomController@edit');
+Route::put('/room-update/{id}', 'Admin\RoomController@update');
+Route::delete('/room-delete/{id}', 'Admin\RoomController@delete');
+Route::get('/changStatus', 'Admin\RoomController@changStatus')->name('change_Status');
 
 //status//
 Route::get('/status', 'Admin\StatusController@index');

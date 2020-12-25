@@ -40,8 +40,8 @@ Web Test
                 <div id="message">
 
                 </div>
-                <h4 class="card-title"> Department 
-                    <a href="{{ url('department-create') }}" class="btn btn-primary float-right">Add</a>
+                <h4 class="card-title"> Typeissues 
+                    <a href="{{ url('typeissues-create') }}" class="btn btn-primary float-right">Add</a>
                 </h4>
             </div>
             <div class="card-body">
@@ -49,22 +49,20 @@ Web Test
                     <thead class="text-primary">
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Code</th>
                         <th>Active</th>
                         <th>EDIT</th>
                         <!-- <th>DELETE</th> -->
                     </thead>
                     <tbody>
-                        @foreach($department as $row)
+                        @foreach($typeissues as $row)
                         <tr>
-                            <input type="hidden" class="departmentdelete_val" value="{{$row->Departmentid}}">
-                            <td>{{$row->Departmentid}}</td>
-                            <td>{{$row->DmName}}</td>
-                            <td>{{$row->DmCode}}</td>
-                            <td><input type="checkbox" class="toggle-class" data-id="{{$row->Departmentid}}" 
-                            data-toggle="toggle" data-on="Enabled" data-off="Disabled" {{$row->DmStatus==true ? 'checked':''}}></td>
+                            <input type="hidden" class="departmentdelete_val" value="{{$row->Typeissuesid}}">
+                            <td>{{$row->Typeissuesid}}</td>
+                            <td>{{$row->Typename}}</td>
+                            <td><input type="checkbox" class="toggle-class" data-id="{{$row->Typeissuesid}}" 
+                            data-toggle="toggle" data-on="Enabled" data-off="Disabled" {{$row->Status==true ? 'checked':''}}></td>
                             <td>
-                                <a href="{{ url('department-edit/'.$row->Departmentid) }}" class="btn btn-success">EDIT</a>
+                                <a href="{{ url('typeissues-edit/'.$row->Typeissuesid) }}" class="btn btn-success">EDIT</a>
                             </td>
                             <!-- <td>
                                 <a href="javascript:void(0)" class="btn btn-danger btn-circle deletebtn" data-toggle="modal" data-target="#deletemodalpop"><i class="fas fa-trash"></i></a>
@@ -104,7 +102,7 @@ Web Test
         type:'GET',
         dataType:'json',
         url:'{{route("change_Status")}}',
-        data:{'DmStatus':DmStatus,'Departmentid':Departmentid},
+        data:{'Status':Status,'Typeissuesid':Typeissuesid},
         success:function(data){
             $('.message').html('<p class="alert alert-danger">'+data.success+'</p>');
         }

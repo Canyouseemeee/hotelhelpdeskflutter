@@ -221,10 +221,10 @@ function DateTime($strDate)
                                 </div>
 
                                 <div class="form-group col-md-7">
-                                    <b> <label>Department : </label></b>
-                                    @foreach($department as $row4)
-                                    @if ($row4->Departmentid === $data->Departmentid)
-                                    <label>{{$row4->DmCode}}-{{$row4->DmName}}</label>
+                                    <b> <label>Typeissues : </label></b>
+                                    @foreach($typeissues as $row4)
+                                    @if ($row4->Typeissuesid === $data->Typeissuesid)
+                                    <label>{{$row4->Typename}}</label>
                                     @endif
                                     @endforeach
                                 </div>
@@ -313,7 +313,7 @@ function DateTime($strDate)
                         &nbsp;&nbsp;
                         <a href="/issues" class="btn btn-danger">Back</a>
                         &nbsp;&nbsp;
-                        <a href="{{ url('pdf/'.$data->Issuesid)}}" class="btn btn-warning"> PDF</a>
+                        <!-- <a href="{{ url('pdf/'.$data->Issuesid)}}" class="btn btn-warning"> PDF</a> -->
                     </div>
                 </div>
             </div>

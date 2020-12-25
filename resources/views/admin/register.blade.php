@@ -40,9 +40,9 @@ Register
                                 @endif
                                 <td>{{$row->name}}</td>
                                 @if($row->teamid === 1)
-                                <td>HW</td>
+                                <td>Technician</td>
                                 @elseif($row->teamid === 2)
-                                <td>SW</td>
+                                <td>Reception</td>
                                 @elseif($row->teamid === 3)
                                 <td>ADMIN</td>
                                 @endif

@@ -95,11 +95,11 @@ function DateThai($strDate)
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label>Department</label>
+                            <label>TypeIssues</label>
                             <p>
-                                <select id="Departmentid" name="Departmentid" class="form-control-lg create col-md-12" require>
-                                    @foreach($department as $row4)
-                                    <option value="{{$row4->Departmentid}}" @if (old("Departmentid")==$row4->Departmentid) selected @endif>{{$row4->DmCode}} - {{$row4->DmName}}</option>
+                                <select id="Typeissuesid" name="Typeissuesid" class="form-control-lg create col-md-12" require>
+                                    @foreach($typeissues as $row4)
+                                    <option value="{{$row4->Typeissuesid}}" @if (old("Typeissuesid")==$row4->Typeissuesid) selected @endif>{{$row4->Typename}}</option>
                                     @endforeach
                                 </select></p>
                         </div>
@@ -474,8 +474,8 @@ function DateThai($strDate)
 </script>
 
 <script>
-    $('#Departmentid').select2({
-        placeholder: " Enter Department",
+    $('#Typeissuesid').select2({
+        placeholder: " Enter TypeIssues",
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,
@@ -590,17 +590,6 @@ function DateThai($strDate)
 <script>
     $('.panelsub_all').hide();
 
-    $('.btn_showAppointments').click(function(e) {
-        e.preventDefault();
-        $('.subappoint').show();
-        $('.subissues').hide();
-        $('.subcomment').hide();
-        $(this).addClass('active');
-        $('.btn_showIssues').removeClass('active')
-        $('.btn_showComments').removeClass('active')
-        $("#resultcomment").empty();
-    });
-
     $('.btn_showIssues').click(function(e) {
         e.preventDefault();
         $('.subappoint').hide();
@@ -620,80 +609,6 @@ function DateThai($strDate)
         $(this).addClass('active');
         $('.btn_showAppointments').removeClass('active')
         $('.btn_showIssues').removeClass('active')
-    });
-
-    $(document).ready(function() {
-
-        $('#addform').on('submit', function(e) {
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "/appointment-add",
-                data: $('#addform').serialize(),
-                success: function(response) {
-                    console.log(response);
-                    // alert("Data Saved");
-                    $('#savemodal').attr('disabled', 'disabled');
-                    $('#AppointDate').attr('readonly', 'readonly');
-                    $('#Comment').attr('readonly', 'readonly');
-                    $('#Status').attr('disabled', 'disabled');
-                    $("#result").html('<div class="alert alert-success" role="alert" id="result">Appointment Save Success</div>');
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
-
-        $('#appointmentclosed').click(function() {
-
-            $('#datatableappointbody').empty();
-            var temp = $('#tempappoint').val();
-            $.ajax({
-                type: "POST",
-                data: {
-                    temp: temp
-                },
-                url: "/api/appointmentlist",
-                success: function(response) {
-                    $('#savemodal').removeAttr('disabled').val("");
-                    $('#AppointDate').removeAttr('readonly').val("");
-                    $('#Comment').removeAttr('readonly').val("");
-                    $('#Status').removeAttr('disabled');
-                    $("#result").empty();
-                    $("#issueseditModal").empty();
-                    var len = response.length;
-                    if (len > 0) {
-                        var irow = response.length;
-                        var i = 0;
-                        var rown = 1;
-                        for (i = 0; i < irow; i++) {
-                            var html = "<tr>";
-                            html += '<td>' + response[i].Date + '</td>';
-                            html += '<td><div class="w-11p" style="height: 30px; overflow: hidden;">' + response[i].Comment + '</div></td>';
-                            if (response[i].Status == 1) {
-                                html += '<td>Active</td>';
-                            }
-                            if (response[i].Status == 2) {
-                                html += '<td>Change</td>';
-                            }
-                            if (response[i].Status == 3) {
-                                html += '<td>Disable</td>';
-                            }
-                            html += '<td>' + response[i].Createby + '</td>';
-                            html += '<td>' + response[i].Updateby + '</td>';
-                            html += '<td>' + response[i].created_at + '</td>';
-                            html += '<td>' + response[i].updated_at + '</td>';
-                            html += '</tr>';
-                            $('#datatableappointbody').append(html);
-                        }
-                    }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        });
     });
 
     $(document).ready(function() {

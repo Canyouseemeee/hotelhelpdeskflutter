@@ -12,25 +12,34 @@ Web Test
                 <h4 class="card-title"> Priority-Create</h4>
             </div>
             <div class="card-body">
-                <form action="{{ url('priority-store') }}" method="post">
+                <form action="{{ url('room-store') }}" method="post">
                     {{ csrf_field() }}
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label> Priority Name</label>
-                                <input type="text" name="ISPName" class="form-control" placeholder="Enter Priority Name">
-                                @if($errors->has('ISPName'))
+                                <label>NoRoom</label>
+                                <input type="text" name="NoRoom" class="form-control" placeholder="Enter NoRoom ">
+                                @if($errors->has('NoRoom'))
                                 <div class="alert alert-danger">
-                                    <li>{{$errors->first('ISPName')}}</li>
+                                    <li>{{$errors->first('NoRoom')}}</li>
                                 </div>
                                 @endif
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label>TypeRoom</label>
+                                <select name="TypeRoomid" class="form-control">
+                                    <option value="0">Deluxe Room</option>
+                                    <option value="1">Suite Room</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label> Priority Description</label>
-                                <textarea type="text" name="Description" class="form-control" placeholder="Enter Priority Description"></textarea>
+                                <label>Description</label>
+                                <textarea type="text" name="Description" class="form-control" placeholder="Enter  Description"></textarea>
                                 @if($errors->has('Description'))
                                 <div class="alert alert-danger">
                                     <li>{{$errors->first('Description')}}</li>
@@ -40,7 +49,7 @@ Web Test
                         </div>
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">SAVE</button>
-                            <a href="/priority" class="btn btn-danger">Back</a>
+                            <a href="/room" class="btn btn-danger">Back</a>
                         </div>
                     </div>
                 </form>

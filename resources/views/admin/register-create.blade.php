@@ -63,8 +63,8 @@
                             <label for="teamid" class="col-md-4 col-form-label text-md-right">Team</label>
                             <div class="col-md-6">
                                 <select name="teamid" class="form-control">
-                                    <option value="1">HW</option>
-                                    <option value="2">SW</option>
+                                    <option value="1">Technician</option>
+                                    <option value="2">Reception</option>
                                     <option value="3">ADMIN</option>
                                 </select>
                             </div>

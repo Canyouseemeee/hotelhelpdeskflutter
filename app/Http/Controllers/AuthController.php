@@ -47,9 +47,9 @@ class AuthController extends Controller
             $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
         }
         if($teamid == 1){
-            $team = "HW";
+            $team = "Technician";
         }elseif($teamid == 2){
-            $team = "SW";
+            $team = "Reception";
         }elseif($teamid == 3){
             $team = "ADMIN";
         }
