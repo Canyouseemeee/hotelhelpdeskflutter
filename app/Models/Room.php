@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     protected $table ='room';
-    protected $primaryKey = 'roomid';
+    protected $primaryKey = 'Roomid';
     protected $fillable = [
-        'TypeRoomid','Status','Description','created_at','updated_at'
+        'NoRoom','TypeRoomid','Status','Description','created_at','updated_at'
     ];
 }

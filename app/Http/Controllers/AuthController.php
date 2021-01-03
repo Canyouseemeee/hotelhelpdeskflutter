@@ -44,6 +44,7 @@ class AuthController extends Controller
             $logintype = $uinfo->logintype;
             $name = $uinfo->name;
             $teamid = $uinfo->teamid;
+            $usertype = $uinfo->usertype;
             $userprofile = array("id" => $uinfo->id, "logintype" => $logintype);
         }
         if($teamid == 1){
@@ -63,7 +64,7 @@ class AuthController extends Controller
                     'status' => 'Success',
                     'token' => $token2,
                     'team' => $team,
-                    'logintype' => 'AD',
+                    'usertype' => $usertype,
                     'input' => $username,
                     'name' => $name,
                     'expires_at' => $expires_at
@@ -75,7 +76,7 @@ class AuthController extends Controller
                     'status' => 'Success',
                     'token' => $token2,
                     'team' => $team,
-                    'logintype' => 'DB',
+                    'usertype' => $usertype,
                     'input' => $username,
                     'name' => $name,
                     'expires_at' => $expires_at

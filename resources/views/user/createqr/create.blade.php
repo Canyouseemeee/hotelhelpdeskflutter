@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('แจ้งปัญหา') }}</div>
 
                 <div class="card-body">
-                    <form action="{{ url('createissues-store/'.$data->roomid) }}" method="POST">
+                    <form action="{{ url('createissues-store/') }}" method="POST">
                         {{ csrf_field() }}
                         @if (session('status'))
                         <div class="alert alert-danger" role="alert">
@@ -16,15 +16,16 @@
                         </div>
                         @endif
 
+                        <div class="form-group row" hidden="true">
+                            <div class="col-md-6">
+                                <input name="Roomid" class="form-control" value="{{$data->Roomid}}" placeholder="{{$data->Roomid}}">
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label for="NoRoom" class="col-md-4 col-form-label text-md-right">เลขห้อง</label>
                             <div class="col-md-6">
-                                <input name="NoRoom" class="form-control" readonly="readonly" value="{{$data->NoRoom}}" placeholder="{{$data->NoRoom}}">
-                                @error('NoRoom')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>NoRoom ไม่ถูกต้อง</strong>
-                                </span>
-                                @enderror
+                                <input type="text" name="NoRoom" class="form-control" readonly="readonly" value="{{$data->NoRoom}}" placeholder="{{$data->NoRoom}}">
                             </div>
                         </div>
 
@@ -36,7 +37,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="Typeissuesid" class="col-md-4 col-form-label text-md-right">TypeIssues</label>
+                            <label for="Typeissuesid" class="col-md-4 col-form-label text-md-right">ประเภทปัญหา</label>
                             <div class="col-md-6">
                                 <p><select id="Typeissuesid" name="Typeissuesid" class="form-control-md create col-md-6" require>
                                         @foreach($typeissues as $row4)

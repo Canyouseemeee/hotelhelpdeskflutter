@@ -10,7 +10,7 @@ class HtIssues extends Model
     protected $table ='htissues';
     protected $primaryKey = 'Issuesid';
     protected $fillable = [
-        'Statusid','Departmentid','Createby','Updatedby','Closedby','Assignment','Subject','Description'
+        'Roomid','Statusid','Departmentid','Createby','Updatedby','Closedby','Assignment','Subject','Description'
         ,'Date_In','Uuid','Image','created_at','updated_at'
     ];
 

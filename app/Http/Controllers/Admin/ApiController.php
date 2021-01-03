@@ -86,37 +86,47 @@ class ApiController extends Controller
 
     public function New()
     {
-        $demodata = DB::table('issues_tracker')
-            ->select(
-                'Issuesid',
-                'issues_tracker.TrackName',
-                'issues_tracker.SubTrackName',
-                'issues_tracker.Name',
-                'ISSName',
-                'ISPName',
-                'issues.Createby',
-                'users.name as Assignment',
-                'issues.UpdatedBy',
-                'issues.Subject',
-                'issues.Tel',
-                'issues.Comname',
-                'issues.Informer',
-                'issues.Description',
-                'issues.created_at',
-                'issues.updated_at',
-                'DmName'
-            )
-            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-            ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
-            ->join('users', 'issues.Assignment', '=', 'users.id')
-            ->where('issues.Statusid', 1)
-            ->orderBy('issues.Issuesid', 'DESC')
+        // $demodata = DB::table('issues_tracker')
+        //     ->select(
+        //         'Issuesid',
+        //         'issues_tracker.TrackName',
+        //         'issues_tracker.SubTrackName',
+        //         'issues_tracker.Name',
+        //         'ISSName',
+        //         'ISPName',
+        //         'issues.Createby',
+        //         'users.name as Assignment',
+        //         'issues.UpdatedBy',
+        //         'issues.Subject',
+        //         'issues.Tel',
+        //         'issues.Comname',
+        //         'issues.Informer',
+        //         'issues.Description',
+        //         'issues.created_at',
+        //         'issues.updated_at',
+        //         'DmName'
+        //     )
+        //     ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+        //     ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+        //     ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+        //     ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
+        //     ->join('users', 'issues.Assignment', '=', 'users.id')
+        //     ->where('issues.Statusid', 1)
+        //     ->orderBy('issues.Issuesid', 'DESC')
+        //     ->get();
+        $htissues = DB::table('htissues')
+            ->select('Issuesid', 'NoRoom', 'ISSName', 'Typename', 'users.name as Assignment', 'htissues.Subject', 'htissues.Description', 
+            'htissues.Createby', 'htissues.Updatedby', 'htissues.created_at', 'htissues.updated_at')
+            ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+            ->join('room', 'htissues.Roomid', '=', 'room.Roomid')
+            ->join('typeissues', 'htissues.Roomid', '=', 'typeissues.Typeissuesid')
+            ->join('users', 'htissues.Assignment', '=', 'users.id')
+            ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
+            ->orderBy('Issuesid', 'DESC')
             ->get();
-        $issues = Issues::all();
+        // $issues = Issues::all();
 
-        return response()->json($demodata);
+        return response()->json($htissues);
     }
 
     public function Defer()
@@ -413,8 +423,20 @@ class ApiController extends Controller
         $temp = $request->input('temp');
 
         $data = DB::table('issues_comment')
-            ->select('users.image','issues_comment.Commentid','issues_comment.Issuesid','issues_comment.Status','issues_comment.Type','issues_comment.Comment','issues_comment.Image'
-            ,'issues_comment.Uuid','issues_comment.Createby','issues_comment.Updateby','issues_comment.created_at','issues_comment.updated_at')
+            ->select(
+                'users.image',
+                'issues_comment.Commentid',
+                'issues_comment.Issuesid',
+                'issues_comment.Status',
+                'issues_comment.Type',
+                'issues_comment.Comment',
+                'issues_comment.Image',
+                'issues_comment.Uuid',
+                'issues_comment.Createby',
+                'issues_comment.Updateby',
+                'issues_comment.created_at',
+                'issues_comment.updated_at'
+            )
             ->join('users', 'issues_comment.Createby', '=', 'users.name')
             ->where('Uuid', $temp)
             ->orderBy('Commentid', 'DESC')

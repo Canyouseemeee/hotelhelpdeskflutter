@@ -51,6 +51,7 @@ class CreateuserController extends Controller
     public function store(Request $request)
     {
         $htissues = new HtIssues();
+        $htissues->Roomid = $request->input('Roomid');
         $htissues->Statusid = $request->input('Statusid');
         $htissues->Typeissuesid = $request->input('Typeissuesid');
         $htissues->Createby = $request->input('Createby');
