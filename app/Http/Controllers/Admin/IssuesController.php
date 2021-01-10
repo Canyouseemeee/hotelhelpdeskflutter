@@ -14,6 +14,7 @@ use App\Models\Issuespriority;
 use App\Models\Issuesstatus;
 use App\Models\Issuestracker;
 use App\Models\HtIssues;
+use App\Models\Room;
 use App\Models\TypeIssues;
 use App\User;
 use Faker\Provider\DateTime;
@@ -65,7 +66,7 @@ class IssuesController extends Controller
         $htissues = DB::table('htissues')
             ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
             ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
-            ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
+            ->where([['htissues.Statusid', 1]])
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
@@ -112,6 +113,68 @@ class IssuesController extends Controller
         $issues = null;
         $Uuidapp = Str::uuid()->toString();
         return view('admin.issues.index', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'], ['htissues']));
+    }
+
+    public function progress()
+    {
+        $issues = DB::table('issues_tracker')
+            ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
+            ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+            ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+            ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+            ->where([['issues.Statusid', 6], ['issues.Date_In', now()->toDateString()]])
+            ->orderBy('Issuesid', 'DESC')
+            ->get();
+        $htissues = DB::table('htissues')
+            ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
+            ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+            ->where([['htissues.Statusid', 6]])
+            ->orderBy('Issuesid', 'DESC')
+            ->get();
+        $between = null;
+        $fromdate = null;
+        $todate = null;
+        $data = null;
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.progress', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'], ['htissues']));
+    }
+
+    public function getReportprogress(Request $request)
+    {
+        $fromdate = $request->input('fromdate');
+        $todate = $request->input('todate');
+        if ($request->isMethod('post')) {
+            $between = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                ->where('issues.Statusid', 6)
+                ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                ->orderBy('Issuesid', 'DESC')
+                ->get();
+            $data = DB::table('issues_tracker')
+                ->select('Issuesid', 'issues_tracker.TrackName', 'ISSName', 'ISPName', 'Createby', 'Subject', 'issues.updated_at')
+                ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
+                ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
+                ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
+                ->where('issues.Statusid', 6)
+                ->whereBetween('issues.Date_In', [$fromdate, $todate])
+                ->orderBy('Issuesid', 'DESC')
+                ->count();
+            $htissues = DB::table('htissues')
+                ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
+                ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+                ->where([['htissues.Statusid', 6], ['htissues.Date_In', now()->toDateString()]])
+                ->orderBy('Issuesid', 'DESC')
+                ->get();
+        } else {
+            $between = null;
+            $data = null;
+        }
+        $issues = null;
+        $Uuidapp = Str::uuid()->toString();
+        return view('admin.issues.progress', compact(['issues'], ['between'], ['Uuidapp'], ['fromdate'], ['todate'], ['data'], ['htissues']));
     }
 
     public function closed()
@@ -208,6 +271,7 @@ class IssuesController extends Controller
             ->get();
         $user = User::all();
         $issuesLogs = IssuesLogs::all();
+        $room = Room::all();
 
         // $Uuidapp = null;
         if ($Uuidapp == null) {
@@ -258,7 +322,8 @@ class IssuesController extends Controller
             ['appointment'],
             ['comment'],
             ['usercomment'],
-            ['countcomment']
+            ['countcomment'],
+            ['room']
         ));
     }
 
@@ -289,7 +354,7 @@ class IssuesController extends Controller
 
         $htissues = new HtIssues();
         // $issues->Trackerid = $request->input('Trackerid');
-        // $issues->Priorityid = $request->input('Priorityid');
+        $htissues->Roomid = $request->input('Roomid');
         $htissues->Statusid = $request->input('Statusid');
         $htissues->Typeissuesid = $request->input('Typeissuesid');
         $htissues->Createby = $request->input('Createby');
@@ -344,6 +409,7 @@ class IssuesController extends Controller
         $issuesstatus = Issuesstatus::all();
         $typeissues = TypeIssues::all();
         $user = User::all();
+        $room = Room::all();
         $issueslog = DB::table('issues_logs')
             ->select('issues_logs.create_at')
             ->join('htissues', 'htissues.Issuesid', '=', 'issues_logs.Issuesid')
@@ -396,7 +462,8 @@ class IssuesController extends Controller
                         ['dateinterval'],
                         ['appointment'],
                         ['comment'],
-                        ['usercomment']
+                        ['usercomment'],
+                        ['room']
                     ));
                 }
             }
@@ -416,7 +483,8 @@ class IssuesController extends Controller
             ['user'],
             ['appointment'],
             ['comment'],
-            ['usercomment']
+            ['usercomment'],
+            ['room']
         ));
     }
 

@@ -60,9 +60,9 @@ Route::get('/success', 'User\CreateuserController@success');
     //issues//
     Route::get('/issues', 'Admin\IssuesController@index');
     Route::get('/closed', 'Admin\IssuesController@closed');
-    Route::get('/defer', 'Admin\IssuesController@defer');
+    Route::get('/progress', 'Admin\IssuesController@progress');
     Route::post('/issues-filter-news', 'Admin\IssuesController@getReport');
-    Route::post('/issues-filter-defers', 'Admin\IssuesController@getReportdefers');
+    Route::post('/issues-filter-progress', 'Admin\IssuesController@getReportprogress');
     Route::post('/issues-filter-closed', 'Admin\IssuesController@getReportclosed');
     Route::get('/issues-edit/{id}/{Uuidapp?}', 'Admin\IssuesController@edit');
     Route::put('/issues-update/{id}', 'Admin\IssuesController@update', function () {
@@ -113,9 +113,9 @@ Route::group(['middleware' => ['auth']], function () {
     //issuesuser//
     Route::get('/issues-user', 'User\IssuesController@index');
     Route::get('/closed-user', 'User\IssuesController@closed');
-    Route::get('/defer-user', 'User\IssuesController@defer');
+    Route::get('/progress-user', 'User\IssuesController@progress');
     Route::post('/issues-filter-news-user', 'User\IssuesController@getReport');
-    Route::post('/issues-filter-defers-user', 'User\IssuesController@getReportdefers');
+    Route::post('/issues-filter-progress-user', 'User\IssuesController@getReportprogress');
     Route::post('/issues-filter-closed-user', 'User\IssuesController@getReportclosed');
     Route::get('/issues-edit-user/{id}/{Uuidapp?}', 'User\IssuesController@edit');
     Route::put('/issues-update-user/{id}', 'User\IssuesController@update', function () {
@@ -152,12 +152,12 @@ Route::get('pdf/{id}', 'Admin\PDFController@pdf');
 
 
 //tracker//
-Route::get('/tracker', 'Admin\TrackerController@index');
-Route::get('/tracker-create', 'Admin\TrackerController@create');
-Route::post('/tracker-store', 'Admin\TrackerController@store');
-Route::get('/tracker-edit/{id}', 'Admin\TrackerController@edit');
-Route::put('/tracker-update/{id}', 'Admin\TrackerController@update');
-Route::delete('/tracker-delete/{id}', 'Admin\TrackerController@delete');
+// Route::get('/tracker', 'Admin\TrackerController@index');
+// Route::get('/tracker-create', 'Admin\TrackerController@create');
+// Route::post('/tracker-store', 'Admin\TrackerController@store');
+// Route::get('/tracker-edit/{id}', 'Admin\TrackerController@edit');
+// Route::put('/tracker-update/{id}', 'Admin\TrackerController@update');
+// Route::delete('/tracker-delete/{id}', 'Admin\TrackerController@delete');
 Route::get('/dynamic/fetch', 'Admin\IssuesController@fetch')->name('dynamiccontroller.fetch');
 
 

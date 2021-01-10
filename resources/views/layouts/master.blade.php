@@ -62,7 +62,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <h6 class="collapse-header">Custom Components:</h6> -->
             <a class="collapse-item" href="/issues">New Issues</a>
-            <!-- <a class="collapse-item" href="/defer">Defer Issues</a> -->
+            <a class="collapse-item" href="/progress">Progress Issues</a>
             <a class="collapse-item" href="/closed">Closed Issues</a>
           </div>
         </div>
@@ -74,11 +74,11 @@
           <span>History</span></a>
       </li>
 
-      <!-- <li class="{{ 'checkin-checkout' == request()->path() ? 'active' : '' }} nav-item ">
+      <li class="{{ 'checkin-checkout' == request()->path() ? 'active' : '' }} nav-item ">
         <a class="nav-link" href="/checkin-checkout">
         <i class="fas fa-fw fa-clipboard-check"></i>
           <span>Checkin-Checkout</span></a>
-      </li> -->
+      </li>
 
       <li class="{{ 'calendar' == request()->path() ? 'active' : '' }} nav-item ">
         <a class="nav-link" href="/calendar">

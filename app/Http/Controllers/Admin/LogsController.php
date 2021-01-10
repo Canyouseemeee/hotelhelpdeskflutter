@@ -11,7 +11,7 @@ class LogsController extends Controller
 {
     public function index(){
         $issuesLogs = IssuesLogs::all();
-        $issueschange = DB::table('htissues')->where([['Statusid', 1], ['Date_In', '!=', now()->toDateString()]])->update(['Statusid' => 3]);
+        // $issueschange = DB::table('htissues')->where([['Statusid', 1], ['Date_In', '!=', now()->toDateString()]])->update(['Statusid' => 3]);
         return view('admin.history.index',compact([['issuesLogs'],['issueschange']]));
     }
 }

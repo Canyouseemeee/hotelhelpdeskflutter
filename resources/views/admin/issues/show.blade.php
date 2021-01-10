@@ -211,8 +211,17 @@ function DateTime($strDate)
                                     @endforeach
                                 </div> -->
 
-                                <div class="form-group col-md-3">
-                                    <b> <label>Status : </label></b>
+                                <div class="form-group col-md-4">
+                                    <b><label>No.Room :</label></b>
+                                    @foreach($room as $row2)
+                                    @if ($row2->Roomid === $data->Roomid)
+                                    <label>{{$row2->NoRoom}}</label>
+                                    @endif
+                                    @endforeach
+                                </div>
+
+                                <div class="form-group col-md-7">
+                                    <b><label>STATUS :</label></b>
                                     @foreach($issuesstatus as $row3)
                                     @if ($row3->Statusid === $data->Statusid)
                                     <label>{{$row3->ISSName}}</label>
@@ -220,8 +229,8 @@ function DateTime($strDate)
                                     @endforeach
                                 </div>
 
-                                <div class="form-group col-md-7">
-                                    <b> <label>Typeissues : </label></b>
+                                <div class="form-group col-md-4">
+                                    <b> <label>TYPE : </label></b>
                                     @foreach($typeissues as $row4)
                                     @if ($row4->Typeissuesid === $data->Typeissuesid)
                                     <label>{{$row4->Typename}}</label>
@@ -230,7 +239,7 @@ function DateTime($strDate)
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <b> <label>Assignment : </label></b>
+                                    <b> <label>ASSIGNMENT : </label></b>
                                     @foreach($user as $row5)
                                     @if ($row5->id === $data->Assignment)
                                     <label>{{$row5->name}}</label>
@@ -240,30 +249,30 @@ function DateTime($strDate)
 
                             </div>
 
-                            <b><label>Subject : </label></b>
+                            <b><label>SUBJECT : </label></b>
                             <div class="form-group col-md-10">
                                 <label class="SandD">{{$data->Subject}}</label>
                             </div>
 
 
-                            <b><label>Description : </label></b>
+                            <b><label>DESCRIPTION : </label></b>
                             <div class="form-group col-md-10">
                                 <label class="SandD">{{$data->Description}}</label>
                             </div>
 
                             <div class="form-row ">
                                 <div class="form-group col-md-4">
-                                    <b> <label>Createby : </label></b>
+                                    <b> <label>CREATED BY : </label></b>
                                     <label>{{$data->Createby}}</label>
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <b> <label>Updatedby : </label></b>
+                                    <b> <label>UPDATED BY : </label></b>
                                     <label>{{$data->Updatedby}}</label>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <b> <label>Closedby : </label></b>
+                                    <b> <label>CLOSED BY : </label></b>
                                     @if($data->Statusid === 1 || $data->Statusid === 3 || $data->Closedby === null)
                                     <label>ยังไม่ปิดงาน</label>
                                     @else
@@ -272,17 +281,17 @@ function DateTime($strDate)
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <b> <label>Created : </label></b>
+                                    <b> <label>CREATED : </label></b>
                                     <label>{{DateThai($data->created_at)}}</label>
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <b> <label>Updated : </label></b>
+                                    <b> <label>UPDATED : </label></b>
                                     <label>{{DateThai2($data->updated_at)}}</label>
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <b> <label>Closed : </label></b>
+                                    <b> <label>CLOSED : </label></b>
                                     @if($data->Statusid === 1 || $data->Statusid === 3)
                                     <label>ยังไม่ปิดงาน</label>
                                     @else
@@ -293,7 +302,7 @@ function DateTime($strDate)
                                 </div>
 
                                 <div class="form-group col-md-4">
-                                    <b> <label>Spend Time : </label></b>
+                                    <b> <label>SPEND TIME : </label></b>
                                     @if($data->Statusid === 1 || $data->Statusid === 3)
                                     <label>ยังไม่ปิดงาน</label>
                                     @else

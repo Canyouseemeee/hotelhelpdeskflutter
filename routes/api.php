@@ -21,10 +21,10 @@ Route::post('/login-ad','AuthController@loginad');
 //Menu
 Route::get('/issues-closed','Admin\ApiController@Closed');
 Route::get('/issues-new','Admin\ApiController@New');
-Route::get('/issues-defer','Admin\ApiController@Defer');
-Route::get('/appointments','Admin\ApiController@Appointments');
+Route::get('/issues-progress','Admin\ApiController@Progress');
+// Route::get('/appointments','Admin\ApiController@Appointments');
 
-Route::post('/appointmentlist','Admin\ApiController@Appointmentlist');
+// Route::post('/appointmentlist','Admin\ApiController@Appointmentlist');
 Route::post('/commentlist','Admin\ApiController@Commentlist');
 Route::post('/commentliststatus','Admin\ApiController@CommentlistStatus');
 

@@ -82,9 +82,19 @@ function DateThai($strDate)
                             </select>
                         </div> -->
 
-                        <div class="form-group col-md-3">
+                        <!-- <div class="form-group col-md-3">
                             <label>NoRoom</label>
                             <input name="NoRoom" class="form-control" value="" placeholder="Number Room">
+                        </div> -->
+
+                        <div class="form-group col-md-3">
+                            <label>NoRoom</label>
+                            <p>
+                                <select id="Roomid" name="Roomid" class="form-control-lg create col-md-12" require>
+                                    @foreach($room as $row3)
+                                    <option value="{{$row3->Roomid}}" @if (old("Roomid")==$row3->Roomid) selected @endif>{{$row3->NoRoom}}</option>
+                                    @endforeach
+                                </select></p>
                         </div>
 
                         <div class="col-md-3">
@@ -476,6 +486,13 @@ function DateThai($strDate)
 <script>
     $('#Typeissuesid').select2({
         placeholder: " Enter TypeIssues",
+        minimumInputLength: 1,
+        delay: 250,
+        allowClear: true,
+    });
+
+    $('#Roomid').select2({
+        placeholder: " Enter NoRoom",
         minimumInputLength: 1,
         delay: 250,
         allowClear: true,

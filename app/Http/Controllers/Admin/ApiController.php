@@ -79,57 +79,37 @@ class ApiController extends Controller
             ->orderBy('issues.Issuesid', 'DESC')
             ->limit(15)
             ->get();
-        $issues = Issues::all();
+        $htissues = DB::table('htissues')
+            ->select('htissues.Issuesid', 'NoRoom', 'ISSName', 'Typename', 'users.name as Assignment', 'htissues.Subject', 'htissues.Description', 
+            'htissues.Createby', 'htissues.Updatedby', 'htissues.created_at', 'htissues.updated_at')
+            ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+            ->join('room', 'htissues.Roomid', '=', 'room.Roomid')
+            ->join('typeissues', 'htissues.Typeissuesid', '=', 'typeissues.Typeissuesid')
+            ->join('users', 'htissues.Assignment', '=', 'users.id')
+            ->join('issues_logs', 'htissues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->where([['htissues.Statusid', 2], ['issues_logs.Action', 'Closed']])
+            ->orderBy('htissues.Issuesid', 'DESC')
+            ->get();
 
-        return response()->json($demodata);
+        return response()->json($htissues);
     }
 
     public function New()
     {
-        // $demodata = DB::table('issues_tracker')
-        //     ->select(
-        //         'Issuesid',
-        //         'issues_tracker.TrackName',
-        //         'issues_tracker.SubTrackName',
-        //         'issues_tracker.Name',
-        //         'ISSName',
-        //         'ISPName',
-        //         'issues.Createby',
-        //         'users.name as Assignment',
-        //         'issues.UpdatedBy',
-        //         'issues.Subject',
-        //         'issues.Tel',
-        //         'issues.Comname',
-        //         'issues.Informer',
-        //         'issues.Description',
-        //         'issues.created_at',
-        //         'issues.updated_at',
-        //         'DmName'
-        //     )
-        //     ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
-        //     ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
-        //     ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-        //     ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
-        //     ->join('users', 'issues.Assignment', '=', 'users.id')
-        //     ->where('issues.Statusid', 1)
-        //     ->orderBy('issues.Issuesid', 'DESC')
-        //     ->get();
         $htissues = DB::table('htissues')
             ->select('Issuesid', 'NoRoom', 'ISSName', 'Typename', 'users.name as Assignment', 'htissues.Subject', 'htissues.Description', 
             'htissues.Createby', 'htissues.Updatedby', 'htissues.created_at', 'htissues.updated_at')
             ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
             ->join('room', 'htissues.Roomid', '=', 'room.Roomid')
-            ->join('typeissues', 'htissues.Roomid', '=', 'typeissues.Typeissuesid')
+            ->join('typeissues', 'htissues.Typeissuesid', '=', 'typeissues.Typeissuesid')
             ->join('users', 'htissues.Assignment', '=', 'users.id')
             ->where([['htissues.Statusid', 1], ['htissues.Date_In', now()->toDateString()]])
             ->orderBy('Issuesid', 'DESC')
             ->get();
-        // $issues = Issues::all();
-
         return response()->json($htissues);
     }
 
-    public function Defer()
+    public function Progress()
     {
         $demodata = DB::table('issues_tracker')
             ->select(
@@ -157,13 +137,24 @@ class ApiController extends Controller
             ->join('department', 'issues.Departmentid', '=', 'department.Departmentid')
             ->join('issues_logs', 'issues.Issuesid', '=', 'issues_logs.Issuesid')
             ->join('users', 'issues.Assignment', '=', 'users.id')
-            ->where([['issues.Statusid', 3], ['issues_logs.Action', 'Updated']])
+            ->where([['issues.Statusid', 6], ['issues_logs.Action', 'Updated']])
             ->groupBy('issues.Issuesid')
             ->orderBy('issues.Issuesid', 'DESC')
             ->get();
-        $issues = Issues::all();
+        $htissues = DB::table('htissues')
+            ->select('htissues.Issuesid', 'NoRoom', 'ISSName', 'Typename', 'users.name as Assignment', 'htissues.Subject', 'htissues.Description', 
+            'htissues.Createby', 'htissues.Updatedby', 'htissues.created_at', 'htissues.updated_at')
+            ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
+            ->join('room', 'htissues.Roomid', '=', 'room.Roomid')
+            ->join('typeissues', 'htissues.Typeissuesid', '=', 'typeissues.Typeissuesid')
+            ->join('users', 'htissues.Assignment', '=', 'users.id')
+            ->join('issues_logs', 'htissues.Issuesid', '=', 'issues_logs.Issuesid')
+            ->where([['htissues.Statusid', 6], ['issues_logs.Action', 'Updated']])
+            ->groupBy('htissues.Issuesid')
+            ->orderBy('Issuesid', 'DESC')
+            ->get();
 
-        return response()->json($demodata);
+        return response()->json($htissues);
     }
 
     public function poststatus(Request $request)
