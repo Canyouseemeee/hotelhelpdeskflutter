@@ -129,7 +129,15 @@ function DateThai($strDate)
                             <select name="Assignment" class="form-control create" require>
                                 <option value="">Select Assignment</option>
                                 @foreach($user as $row5)
-                                <option value="{{$row5->id}}" @if (old("Assignment")==$row5->id) selected @endif>{{$row5->name}}</option>
+                                    @foreach($usertest as $rowtest)
+                                    @if ($row5->id === $rowtest->id)
+                                    @if ($rowtest->Statusid === null)
+                                        <option value="{{$row5->id}}" @if (old("Assignment")==$row5->id) selected @endif>{{$row5->name}} - 0</option>
+                                    @else
+                                        <option value="{{$row5->id}}" @if (old("Assignment")==$row5->id) selected @endif>{{$row5->name}} - {{$rowtest->count}}</option>
+                                    @endif
+                                    @endif
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>

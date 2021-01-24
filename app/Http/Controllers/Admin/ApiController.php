@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointments;
+use App\Models\HtIssues;
 use App\Models\Issues;
 use App\Models\IssuesCheckin;
 use App\Models\IssuesComment;
@@ -170,6 +171,10 @@ class ApiController extends Controller
         $checkin->created_at = DateThai(now());
         $checkin->updated_at = DateThai(now());
         $checkin->save();
+
+        $htissues = HtIssues::find($_issuesid);
+        $htissues->Statusid = 3;
+        $htissues->update();
 
         return response()->json([
             'status' => 'success'

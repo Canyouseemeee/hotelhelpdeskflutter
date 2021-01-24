@@ -241,9 +241,13 @@ function DateTime($strDate)
                                 <div class="form-group col-md-3">
                                     <b> <label>ASSIGNMENT : </label></b>
                                     @foreach($user as $row5)
+                                    @foreach($usertest as $rowtest)
+                                    @if ($row5->id === $rowtest->id)
                                     @if ($row5->id === $data->Assignment)
-                                    <label>{{$row5->name}}</label>
+                                    <label>{{$row5->name}} - {{$rowtest->count}}</label>
                                     @endif
+                                    @endif
+                                    @endforeach
                                     @endforeach
                                 </div>
 
@@ -292,7 +296,7 @@ function DateTime($strDate)
 
                                 <div class="form-group col-md-4">
                                     <b> <label>CLOSED : </label></b>
-                                    @if($data->Statusid === 1 || $data->Statusid === 3)
+                                    @if($data->Statusid === 1 || $data->Statusid === 6)
                                     <label>ยังไม่ปิดงาน</label>
                                     @else
                                     @foreach($issueslog as $log)
@@ -303,7 +307,7 @@ function DateTime($strDate)
 
                                 <div class="form-group col-md-4">
                                     <b> <label>SPEND TIME : </label></b>
-                                    @if($data->Statusid === 1 || $data->Statusid === 3)
+                                    @if($data->Statusid === 1 || $data->Statusid === 6)
                                     <label>ยังไม่ปิดงาน</label>
                                     @else
                                     <label>{{($dateinterval)->format('%d วัน %H:%I:%S น.')}}</label>

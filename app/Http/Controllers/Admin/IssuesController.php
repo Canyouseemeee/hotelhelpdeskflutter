@@ -128,7 +128,7 @@ class IssuesController extends Controller
         $htissues = DB::table('htissues')
             ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
             ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
-            ->where([['htissues.Statusid', 6]])
+            ->where([['htissues.Statusid', 3]])
             ->orderBy('Issuesid', 'DESC')
             ->get();
         $between = null;
@@ -149,7 +149,7 @@ class IssuesController extends Controller
                 ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                ->where('issues.Statusid', 6)
+                ->where('issues.Statusid', 3)
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
@@ -158,14 +158,14 @@ class IssuesController extends Controller
                 ->join('issues', 'issues.Trackerid', '=', 'issues_tracker.Trackerid')
                 ->join('issues_priority', 'issues.Priorityid', '=', 'issues_priority.Priorityid')
                 ->join('issues_status', 'issues.Statusid', '=', 'issues_status.Statusid')
-                ->where('issues.Statusid', 6)
+                ->where('issues.Statusid', 3)
                 ->whereBetween('issues.Date_In', [$fromdate, $todate])
                 ->orderBy('Issuesid', 'DESC')
                 ->count();
             $htissues = DB::table('htissues')
                 ->select('Issuesid', 'ISSName', 'Createby', 'Subject', 'htissues.updated_at')
                 ->join('issues_status', 'htissues.Statusid', '=', 'issues_status.Statusid')
-                ->where([['htissues.Statusid', 6], ['htissues.Date_In', now()->toDateString()]])
+                ->where([['htissues.Statusid', 3], ['htissues.Date_In', now()->toDateString()]])
                 ->orderBy('Issuesid', 'DESC')
                 ->get();
         } else {
@@ -270,6 +270,15 @@ class IssuesController extends Controller
             ->where('Status', 1)
             ->get();
         $user = User::all();
+
+        $usertest = DB::table('users')
+        ->select(array('users.id','htissues.Statusid',DB::raw('COUNT(htissues.Assignment) as count')))
+        ->leftJoin('htissues','htissues.Assignment','=','users.id')
+        ->whereNULL('htissues.Assignment')
+        ->orwhere('htissues.Date_In', now()->toDateString())
+        ->groupBy('users.id')
+        ->get();
+
         $issuesLogs = IssuesLogs::all();
         $room = Room::all();
 
@@ -323,7 +332,8 @@ class IssuesController extends Controller
             ['comment'],
             ['usercomment'],
             ['countcomment'],
-            ['room']
+            ['room'],
+            ['usertest']
         ));
     }
 
@@ -409,6 +419,13 @@ class IssuesController extends Controller
         $issuesstatus = Issuesstatus::all();
         $typeissues = TypeIssues::all();
         $user = User::all();
+        $usertest = DB::table('users')
+        ->select(array('users.id','htissues.Statusid',DB::raw('COUNT(htissues.Assignment) as count')))
+        ->leftJoin('htissues','htissues.Assignment','=','users.id')
+        ->whereNULL('htissues.Assignment')
+        ->orwhere('htissues.Date_In', now()->toDateString())
+        ->groupBy('users.id')
+        ->get();
         $room = Room::all();
         $issueslog = DB::table('issues_logs')
             ->select('issues_logs.create_at')
@@ -463,7 +480,8 @@ class IssuesController extends Controller
                         ['appointment'],
                         ['comment'],
                         ['usercomment'],
-                        ['room']
+                        ['room'],
+                        ['usertest']
                     ));
                 }
             }
@@ -484,7 +502,8 @@ class IssuesController extends Controller
             ['appointment'],
             ['comment'],
             ['usercomment'],
-            ['room']
+            ['room'],
+            ['usertest']
         ));
     }
 
@@ -509,6 +528,14 @@ class IssuesController extends Controller
             ->where('Status', 1)
             ->get();
         $user = User::all();
+        $usertest = DB::table('users')
+        ->select(array('users.id','htissues.Statusid',DB::raw('COUNT(htissues.Assignment) as count')))
+        ->leftJoin('htissues','htissues.Assignment','=','users.id')
+        ->whereNULL('htissues.Assignment')
+        ->orwhere('htissues.Date_In', now()->toDateString())
+        ->groupBy('users.id')
+        ->get();
+        $room = Room::all();
         if ($Uuid == null) {
             $Uuid = Str::uuid()->toString();
             $temp = $Uuid;
@@ -559,7 +586,9 @@ class IssuesController extends Controller
             ['temp'],
             ['comment'],
             ['usercomment'],
-            ['countcomment']
+            ['countcomment'],
+            ['usertest'],
+            ['room']
 
         ));
     }
