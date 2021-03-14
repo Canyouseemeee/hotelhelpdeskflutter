@@ -6,7 +6,7 @@ import 'package:hotelhelpdesk/Screens/Login/components/body.dart';
 import 'package:hotelhelpdesk/Screens/detail.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:hotelhelpdesk/Models/Progress.dart';
+import 'package:hotelhelpdesk/Models/Myjob.dart';
 import 'package:hotelhelpdesk/Other/constants.dart';
 import 'package:hotelhelpdesk/Other/services/Jsondata.dart';
 import 'package:intl/intl.dart';
@@ -14,12 +14,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buddhist_datetime_dateformat/buddhist_datetime_dateformat.dart';
 
 
-class Progress extends StatefulWidget {
+class Job extends StatefulWidget {
   @override
-  _ProgressState createState() => _ProgressState();
+  _JobState createState() => _JobState();
 }
 
-class _ProgressState extends State<Progress> {
+class _JobState extends State<Job> {
   SharedPreferences sharedPreferences;
   final double _borderRadius = 24;
   int _currentMax = 10;
@@ -27,7 +27,7 @@ class _ProgressState extends State<Progress> {
   var min;
   var formatter = DateFormat.yMd().add_jm();
   ScrollController _scrollController = new ScrollController();
-  List<Progress_s> _progress;
+  List<Myjob> _myjob;
   bool _loading;
   DateTime time = DateTime.now();
   bool _disposed = false;
@@ -43,12 +43,12 @@ class _ProgressState extends State<Progress> {
         });
     });
     _loading = true;
-    Jsondata.getProgress().then((prog) {
+    Jsondata.getMyjob().then((myjob) {
       setState(() {
-        _progress = prog;
-        max = _progress.length;
+        _myjob = myjob;
+        max = _myjob.length;
         // _new = List.generate(10, (index) => _new[index]);
-        min = _progress.length;
+        min = _myjob.length;
         _scrollController.addListener(() {
           if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
@@ -92,19 +92,19 @@ class _ProgressState extends State<Progress> {
   getMoreData() {
     if (min == 10) {
       for (int i = _currentMax; i < max - 1; i++) {
-        Jsondata.getProgress().then((progress) {
+        Jsondata.getMyjob().then((myjob) {
           setState(() {
-            _progress = progress;
-            _progress.add(_progress[i]);
-            _progress.length = max;
+            _myjob = myjob;
+            _myjob.add(_myjob[i]);
+            _myjob.length = max;
             _loading = false;
-            if (_progress.isNotEmpty) {
-              return _progress.elementAt(0);
+            if (_myjob.isNotEmpty) {
+              return _myjob.elementAt(0);
             }
           });
         });
       }
-      if (_progress.length == max) {
+      if (_myjob.length == max) {
         showAlertLimitData();
       }
     }
@@ -235,10 +235,10 @@ class _ProgressState extends State<Progress> {
     child: ListView.builder(
       controller: _scrollController,
       scrollDirection: Axis.vertical,
-      itemCount: null == _progress ? 0 : _progress.length + 1,
+      itemCount: null == _myjob ? 0 : _myjob.length + 1,
       itemExtent: 100,
       itemBuilder: (context, index) {
-        if (_progress.length == 0 || _progress.length == null) {
+        if (_myjob.length == 0 || _myjob.length == null) {
           return Center(
             child: Text(
               "No Result",
@@ -246,13 +246,13 @@ class _ProgressState extends State<Progress> {
             ),
           );
         } else {
-          if (index == _progress.length && _progress.length > 10 && index > 10) {
+          if (index == _myjob.length && _myjob.length > 10 && index > 10) {
             return Center(
                 child: CircularProgressIndicator(
                   backgroundColor: Colors.white70,
                 ));
-          } else if (index == _progress.length &&
-              _progress.length <= 10 &&
+          } else if (index == _myjob.length &&
+              _myjob.length <= 10 &&
               index <= 10) {
             return Center(child: Text(""));
           }
@@ -298,7 +298,7 @@ class _ProgressState extends State<Progress> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "No.Room : " + _progress[index].noRoom,
+                                  "No.Room : " + _myjob[index].noRoom,
                                   style: TextStyle(
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w700),
@@ -307,7 +307,7 @@ class _ProgressState extends State<Progress> {
                                   height: 16,
                                 ),
                                 Text(
-                                  "SUBJECT : " + _progress[index].subject,
+                                  "SUBJECT : " + _myjob[index].subject,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       color: Colors.black45,
@@ -323,7 +323,7 @@ class _ProgressState extends State<Progress> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Text(
-                                "STATUS : " + _progress[index].issName,
+                                "STATUS : " + _myjob[index].issName,
                                 style: TextStyle(
                                     color: Colors.black87,
                                     fontWeight: FontWeight.w700),
@@ -334,7 +334,7 @@ class _ProgressState extends State<Progress> {
                               Text(
                                 "Createat : " +
                                     formatter.formatInBuddhistCalendarThai(
-                                        _progress[index].createdAt),
+                                        _myjob[index].createdAt),
                                 style: TextStyle(
                                     color: Colors.black45,
                                     fontWeight: FontWeight.w700),
@@ -358,7 +358,7 @@ class _ProgressState extends State<Progress> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => IssuesProgressDetail(_progress[index])),
+                  builder: (context) => IssuesMyjobDetail(_myjob[index])),
             ).then((value) {
               setState(() {
                 _handleRefresh();
@@ -385,12 +385,12 @@ class _ProgressState extends State<Progress> {
             });
         });
         _loading = true;
-        Jsondata.getProgress().then((progress) {
+        Jsondata.getMyjob().then((myjob) {
           setState(() {
-            _progress = progress;
-            max = _progress.length;
+            _myjob = myjob;
+            max = _myjob.length;
             // _new = List.generate(10, (index) => _new[index]);
-            min = _progress.length;
+            min = _myjob.length;
             _scrollController.addListener(() {
               if (_scrollController.position.pixels ==
                   _scrollController.position.maxScrollExtent) {

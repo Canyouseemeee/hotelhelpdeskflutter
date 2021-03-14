@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hotelhelpdesk/Other/constants.dart';
 import 'package:hotelhelpdesk/Other/services/BadgeIcon.dart';
 import 'package:hotelhelpdesk/Screens/closed.dart';
+import 'package:hotelhelpdesk/Screens/myjob.dart';
 import 'package:hotelhelpdesk/Screens/news.dart';
 import 'package:hotelhelpdesk/Screens/menu.dart';
 import 'package:hotelhelpdesk/Screens/progress.dart';
@@ -20,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   int count = 0;
   bool _loading;
   StreamController<int> _countController = StreamController<int>();
+  Job job = new Job();
   News news = new News();
   Progress progress = new Progress();
   Closed closed = new Closed();
@@ -29,8 +32,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    pages = [news,progress, closed, menu];
-    currantpage = news;
+    pages = [job, news, progress, closed, menu];
+    currantpage = job;
     // _loading = true;
   }
 
@@ -53,52 +56,59 @@ class _HomePageState extends State<HomePage> {
       //    ],
       //  ),
       // ),
-      backgroundColor: Colors.blue,
+      backgroundColor: kPrimaryColor,
       body: currantpage,
-      bottomNavigationBar: RefreshIndicator(
-        child: SafeArea(
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            type: BottomNavigationBarType.fixed,
-            // backgroundColor: Color(0xFF34558b),
-            selectedItemColor: Color(0xFFFF8C7E),
-            items: [
-              BottomNavigationBarItem(
-                icon: StreamBuilder(
-                  initialData: _tabBarCount,
-                  stream: _countController.stream,
-                  builder: (_, snapshot) => BadgeIcon(
-                    icon: Icon(
-                      Icons.new_releases_sharp,
+      bottomNavigationBar: SafeArea(
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30.0),
+              topRight: Radius.circular(30.0),
+            ),
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              type: BottomNavigationBarType.fixed,
+              // backgroundColor: Color(0xFF34558b),
+              selectedItemColor: Color(0xFFFF8C7E),
+              items: [
+                BottomNavigationBarItem(
+                  icon: StreamBuilder(
+                    initialData: _tabBarCount,
+                    // stream: _countController.stream,
+                    builder: (_, snapshot) => BadgeIcon(
+                      icon: Icon(
+                        Icons.insert_drive_file_outlined,
+                      ),
+                      badgeCount: snapshot.data,
                     ),
-                    badgeCount: snapshot.data,
                   ),
+                  title: const Text("MyJob"),
                 ),
-                title: const Text("Home"),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.history_toggle_off),
-                title: Text("Progress"),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.close),
-                title: Text("Closed"),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.menu),
-                title: Text("Menu"),
-              ),
-            ],
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-                currantpage = pages[index];
-              });
-            },
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  title: Text("Home"),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.history_toggle_off),
+                  title: Text("Progress"),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.close),
+                  title: Text("Closed"),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.menu),
+                  title: Text("Menu"),
+                ),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                  currantpage = pages[index];
+                });
+              },
+            ),
           ),
         ),
-        onRefresh: _handleRefresh,
-      ),
     );
   }
 
